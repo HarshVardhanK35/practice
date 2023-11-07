@@ -1,3 +1,2 @@
-This is JAVASCRIPT PRACTICE
-
-This file is on Main branch ---> "https://github.com/HarshVardhanK35/practice.git".
+I am Master Branch.
+This is GitHub Repo Link: "https://github.com/HarshVardhanK35/practice.git"
