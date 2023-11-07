@@ -1,2 +1,2 @@
-I am Master Branch.
+I am main Branch.
 This is GitHub Repo Link: "https://github.com/HarshVardhanK35/practice.git"
