@@ -1,4 +1,4 @@
-let students = ["John", "Henry", "John"];
+// let students = ["John", "Henry", "John"];
 
 // let res = students.map((item, index)=>{
 //     return (`${item} with ID ${index}`)
@@ -21,17 +21,11 @@ let students = ["John", "Henry", "John"];
 // }
 // let clone = greet();
 // let clone1 = greet;
+// console.log(clone);
+// console.log(clone1())
 
-// function details(fName, age = 22){
-//     return ({
-//         firstName: fName,
-//         age: age
-//     })
-// }
-// let person1 = details('John', 23);
-// console.log(person1);
+// let str = "Hello JavaScript This is Harsha";
+// let arr = str.split(" ");
+// let res = arr.join(" ");
+// console.log(res);
 
-let clone = function sample(){
-    console.log("This is clone function!")
-};
-clone();
