@@ -1,7 +1,6 @@
 // ---------------------------------------------- Filter - Method:
 
-const numbers = [1, 2, 3, 4, 5, 6];
-
+const numbers = [1, 2, 3];
 
 // const evenArr = numbers.filter((num)=>{
 //   return (num % 2 === 0);
@@ -59,20 +58,17 @@ const companies = [
   },
 ];
 
-
 // Get only retail companies.
 // let retailCompanies = companies.filter((company) => {
 //   return company.category === "retail";
 // });
 // console.log(retailCompanies);
 
-
 // Get companies details started in/after 1980 and ended in/before 2005
 // let companyTenure = companies.filter((company)=>{
 //   return (company.start >= 1980 && company.end <= 2005);
 // });
 // console.log(companyTenure);
-
 
 // Get companies that lasted 10 yrs or more
 // let details = companies.filter((company)=>{
@@ -81,37 +77,66 @@ const companies = [
 // console.log(details);
 
 // =======================================================================
+// ---------------------------------- map() method:
 
-// -------------------------------------------------- map() method
 // const numbers = [1, 2, 3, 4, 5];
 // const dobArr = numbers.map((number)=>{
 //   return number * 2;
 // })
 // console.log(dobArr);
 
-
 // Create an array of company names
-const companyNames = companies.map((company)=>{
-  return company.name
-})
+const companyNames = companies.map((company) => {
+  return company.name;
+});
 // console.log(companyNames)
 
-
 // Create an object of {name: 'companyName', category: 'companyCategory'}
-const companyDetails = companies.map((comp)=>{
-  return ({
+const companyDetails = companies.map((comp) => {
+  return {
     name: comp.name,
     category: comp.category,
-    tenure: `${comp.end - comp.start} years`
-  })
+    tenure: `${comp.end - comp.start} years`,
+  };
 });
 // console.log(companyDetails);
 
-
 // Chaining Map Methods:
-const sqrAndDbl = numbers.map((numSqr)=>{
-  return (numSqr ** (1/2)).toFixed(2);
-}).map((numDbl) => {
-  return +numDbl * 2;
-});
+const sqrAndDbl = numbers
+  .map((numSqr) => {
+    return (numSqr ** (1 / 2)).toFixed(2);
+  })
+  .map((numDbl) => {
+    return +numDbl * 2;
+  });
 // console.log(sqrAndDbl);
+
+// =======================================================================
+// -------------------------------- reduce() method:
+
+const sum = numbers.reduce((pre, curr) => {
+  return pre + curr;
+});
+// console.log(sum);
+
+
+// -------------------------------------Cart Example
+const cart = [
+  { id: 1, prod: "product 1", cost: 130 },
+  { id: 2, prod: "product 2", cost: 150 },
+  { id: 3, prod: "product 3", cost: 138 },
+];
+
+// -------------------------------------Chaining Map and Reduce
+// const total = cart.map((ele)=>{
+//   return ele.cost;
+// }).reduce((pre, curr)=>{
+//   return (pre + curr)
+// }, 0);
+
+// --------------------------------------Simple way
+const total = cart.reduce(( pre, product ) => {
+  return ( pre + product.cost );
+}, 0);
+
+// console.log(total);
