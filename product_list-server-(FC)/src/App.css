@@ -1,0 +1,15 @@
+.table {
+  border-collapse: separate;
+}
+
+.table th,
+.table td {
+  border: 1px solid black;
+  text-align: left;
+}
+
+nav a {
+  margin-right: 10px;
+  text-decoration: underline;
+  color: black; 
+}
