@@ -49,3 +49,18 @@
 //   console.log(out);
 // })(10, 20);
 // console.log(window);
+
+
+// const add = (num1, num2) => {
+//   var sum;
+//   sum = num1 + num2;
+//   return(sum)
+// }
+// var res = (add(1, 2))
+// console.log(res)
+
+// const multiply = (num3) => {
+//   let prod = res * (num3);
+//   return prod;
+// }
+// console.log(multiply(2))

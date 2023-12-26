@@ -1,5 +1,3 @@
-// console.log()
-
 // Declare Global Scope Variables
 //---------------------------------------------------------------------------------------------------------------------------------------
 const itemForm = document.getElementById('item-form');
@@ -7,10 +5,13 @@ const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
 const clearAllBtn = document.getElementById('clear-all');
 const filterBox = document.getElementById('filter');
+let isEditMode = false;
+const formBtn = itemForm.querySelector('.btn')
 
 // Functions
 //---------------------------------------------------------------------------------------------------------------------------------------
 const displayItems = () => {
+
   const itemsFromStorage = getItemsFromStorage();
 
   itemsFromStorage.forEach((item) => {
@@ -24,6 +25,7 @@ const displayItems = () => {
 // Adding new items on submitting the form
 //---------------------------------------------------------------------------------------------------------------------------------------
 const addItemOnSubmit = (e) => {
+
   e.preventDefault();
 
   // Get Input Value
@@ -35,6 +37,27 @@ const addItemOnSubmit = (e) => {
     return
   };
 
+  // Check for edit-mode
+  /*
+    as we can not update the item in localStorage
+    so, we delete the element that is already present and
+    set the newly updated item into localStorage
+  */
+  if(isEditMode){
+    const itemToEdit = itemList.querySelector('.edit-mode');
+    removeItemFromStorage(itemToEdit.textContent);
+
+    itemToEdit.classList.remove('edit-mode');
+    itemToEdit.remove();
+    isEditMode = false;
+  }
+  else{
+    if(checkIfItemExists(newItem)){
+      alert('That item already exists!!!');
+      return
+    }
+  }
+
   // create and add items on DOM object
   addItemOnDOM(newItem);
 
@@ -45,6 +68,8 @@ const addItemOnSubmit = (e) => {
   checkUI();
 
   itemInput.value = ''
+
+
 }
 
 // Add item on DOM
@@ -65,18 +90,22 @@ const addItemOnDOM = (item) => {
 // Create Button
 //---------------------------------------------------------------------------------------------------------------------------------------
 const createBtn = (classes) => {
+
   const btn = document.createElement('button');
   btn.className = classes;
   btn.appendChild(createIcon('fa-solid fa-xmark'));
   return btn;
+
 };
 
 // Create Icon
 //---------------------------------------------------------------------------------------------------------------------------------------
 const createIcon = (classes) => {
+
   const icon = document.createElement('i');
   icon.className = classes;
   return icon;
+
 }
 
 // Add items on storage
@@ -118,39 +147,89 @@ const getItemsFromStorage = (item) => {
   return itemsFromStorage;
 }
 
-const onClickItem = (e) => {
-  
+// Prevent duplicate items
+const checkIfItemExists=(item)=>{
+  const itemsFromStorage = getItemsFromStorage();
+
+  // if(itemsFromStorage.includes(item)){
+  //   return true
+  // }
+  // else{
+  //   return false
+  // }
+  // ---------------------- or ----------------------
+  return itemsFromStorage.includes(item);
 }
 
-// Remove an item.
-// Event Delegation --- where we put the actual event on the item list which is UL.
+// onClickItem -> to edit the item, remove it from both UI and storage
 //---------------------------------------------------------------------------------------------------------------------------------------
-const removeItem = (e) => {
+const onClickItem = (e) => {
+
+  // Event Delegation --- where we put the actual event on the item list which is UL.
   // Here we are targeting the "X" mark which is the Icon element
   if(e.target.parentElement.classList.contains('remove-item')){
-
-    if(confirm(`Are you sure, you want to remove ${e.target.parentElement.parentElement.innerText}`)){
-      // The parent elem for icon is button and button's is list --- Here we are removing the list item.
-      e.target.parentElement.parentElement.remove();
-    }
-
-    // Every time we have to run the checkUI --- after removing an item
-    checkUI()
+    removeItem(e.target.parentElement.parentElement);
   }
+  else{
+    setItemToEdit(e.target)
+  }
+}
+
+const setItemToEdit = (item) => {
+  isEditMode = true;
+
+  itemList.querySelectorAll('li').forEach((elem)=>{elem.classList.remove('edit-mode')})
+
+  item.classList.add('edit-mode')
+
+  formBtn.innerHTML = '<i class="fa-solid fa-wrench"></i> Update Item';
+  formBtn.style.backgroundColor = '#00fd0e'
+  itemInput.value = item.textContent
+}
+
+// Remove an item from both DOM and Storage.
+//---------------------------------------------------------------------------------------------------------------------------------------
+const removeItem = (item) => {
+
+  // Remove from DOM
+  if(confirm(`Are you sure?`)){
+    item.remove();
+  }
+
+  // Remove from storage
+  removeItemFromStorage(item.textContent);
+
+  // Every time we have to run the checkUI --- after removing an item
+  checkUI()
+}
+
+const removeItemFromStorage = (item) => {
+  let itemsFromStorage = getItemsFromStorage();
+
+  // Filter out the item to be removed
+  itemsFromStorage = itemsFromStorage.filter((elem)=>{
+    if(elem !== item){
+      return(elem)
+    }
+  })
+
+  // Re-set the localStorage
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage))
 }
 
 
 // Clear All Items.
 //---------------------------------------------------------------------------------------------------------------------------------------
 const clearItems = () => {
+
   // 1st - Method --- The simplest way:
-
   if(confirm('Are you sure, you want to clear all items?')){
-    itemList.innerText = '' // --------------------Cleared all items--------------------
-  }
 
-  // Clear all items from localStorage
-  localStorage.clear('items')
+    itemList.innerText = '' // --------------------Cleared all items--------------------
+
+    // Clear all items from localStorage
+    localStorage.clear('items')
+  }
 
   // 2nd-Method:
   // while(itemList.firstChild){
@@ -164,6 +243,7 @@ const clearItems = () => {
 // Filter Items:
 //---------------------------------------------------------------------------------------------------------------------------------------
 const filterItems = (e) => {
+
   const arrListItems = itemList.querySelectorAll('li'); // returns Node-list
   const inpTxt = e.target.value.toLowerCase(); // Filter Box Text
   arrListItems.forEach((item) => {
@@ -184,6 +264,9 @@ const filterItems = (e) => {
 // Clear UI state --- Do not show the FILTER ITEMS BOX and CLEAR ALL BUTTON on UI, If there are no Shopping items
 //---------------------------------------------------------------------------------------------------------------------------------------
 function checkUI(){
+
+  itemInput.value = ''
+
   const items = itemList.querySelectorAll('li'); // gets all the list items
 
   if(items.length === 0){
@@ -195,13 +278,20 @@ function checkUI(){
     clearAllBtn.style.display = 'block';
     filterBox.style.display = 'block';
   }
-};
+
+  formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
+  formBtn.style.backgroundColor = '#ffa580';
+  isEditMode = false;
+
+
+}
 
 // Event Listeners
 // Just one 'init()' on global scope instead of having all event listeners on the global scope
 //---------------------------------------------------------------------------------------------------------------------------------------
 
 const init = () => {
+
   itemForm.addEventListener('submit', addItemOnSubmit); //--- Add an item
   // -> "onClickItem" not only focuses on 'X' button but also when we click anywhere on the list item the item goes into the input box to get updated.
   itemList.addEventListener('click', onClickItem);
@@ -210,8 +300,9 @@ const init = () => {
   document.addEventListener('DOMContentLoaded', displayItems); // Display the storage items after document loading
   // When the page loads it runs the checkUI function
   checkUI() // --- Global Scope
+
 }
-init()
+init();
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ NOTE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This checkUI runs every time the page loads and not whenever we add an item into the List.
