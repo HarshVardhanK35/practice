@@ -108,6 +108,22 @@ const createIcon = (classes) => {
 
 }
 
+// Retrieve items from storage
+//---------------------------------------------------------------------------------------------------------------------------------------
+const getItemsFromStorage = (item) => {
+
+  let itemsFromStorage; // Represent items that are present on local storage
+
+  if(localStorage.getItem('items') === null){ // Using KEY-Items -> fetching data from localStorage and checking if it is empty.
+    itemsFromStorage = []; // if there are no items on localsStorage -> Set itemsFromStorage to an empty array
+  }
+  else{
+    itemsFromStorage = JSON.parse(localStorage.getItem('items')); // we parsed localStorage.getItem('items') which returns a string of array
+  }
+
+  return itemsFromStorage;
+}
+
 // Add items on storage
 //---------------------------------------------------------------------------------------------------------------------------------------
 const addItemOnStorage = (item) => {
@@ -131,21 +147,6 @@ const addItemOnStorage = (item) => {
   localStorage.setItem('items', JSON.stringify(itemsFromStorage))
 }
 
-// Retrieve items from storage
-//---------------------------------------------------------------------------------------------------------------------------------------
-const getItemsFromStorage = (item) => {
-
-  let itemsFromStorage; // Represent items that are present on local storage
-
-  if(localStorage.getItem('items') === null){ // Using KEY-Items -> fetching data from localStorage and checking if it is empty.
-    itemsFromStorage = []; // if there are no items on localsStorage -> Set itemsFromStorage to an empty array
-  }
-  else{
-    itemsFromStorage = JSON.parse(localStorage.getItem('items')); // we parsed localStorage.getItem('items') which returns a string of array
-  }
-
-  return itemsFromStorage;
-}
 
 // Prevent duplicate items
 const checkIfItemExists=(item)=>{
