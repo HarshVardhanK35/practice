@@ -1,3 +1,4 @@
+// console.log("Hello")
 // console.log('hello')
 
 function getData(endPoint){
@@ -24,16 +25,16 @@ function getData(endPoint){
   })
 }
 
-// Using Promises to prevent Callback-Hell...
-getData('./db/anime.json')
-.then((anime)=>{
-  console.log(anime)
-  return getData('./db/characters.json')
+// Promises
+const animePrm = getData('./db/anime.json');
+const charactersPrm = getData('./db/characters.json');
+const writersPrm = getData('./db/writers.json');
+
+// Promise.all() --- takes all promises --- which is an array
+Promise.all([animePrm, charactersPrm, writersPrm])
+.then((data)=>{
+  console.log(data)
 })
-.then((characters)=>{
-  console.log(characters)
-  return getData('./db/writers.json')
-})
-.then((writers)=>{
-  console.log(writers)
+.catch((err)=>{
+  console.log(err)
 })
