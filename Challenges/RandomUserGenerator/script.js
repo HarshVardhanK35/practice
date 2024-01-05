@@ -7,8 +7,11 @@ let state = document.querySelector(".state");
 let image = document.querySelector("img");
 
 const fetchUser = () => {
-  fetch("https://randomuser.me/api/")
+  fetch("https://randomuser.me/api/1")
     .then((response) => {
+      if(!response.ok){
+        throw new Error('Request Failed')
+      }
       return response.json();
     })
     .then((data) => {
@@ -131,7 +134,11 @@ const fetchUser = () => {
         </div>
       </div>
       `;
-    });
+    })
+    .catch((err)=>{
+      const user = document.querySelector('.user');
+      user.innerHTML = `<strong>${err}</strong>`
+    })
 };
 
 document.addEventListener("DOMContentLoaded", fetchUser);
