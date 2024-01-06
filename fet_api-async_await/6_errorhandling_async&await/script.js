@@ -1,7 +1,13 @@
 // console.log('Hello')
 
-// try...catch with async & await (Using Url)
+/* Ways to handle errors:
+                          1st way ---> Try...Catch Method
+                          2nd way ---> .then() method
+*/
+
+// 1. try...catch with async & await (Using Url)
 // ------------------------------------------------
+
 // const getUsers = async() => {
 //   try{
 //     const res = await fetch('https://jsonplaceholder.typicode.com/users')
@@ -14,7 +20,6 @@
 //   }
 // }
 // getUsers()
-
 
 // try...catch with async & await (Using Url with 404 error!)
 // ------------------------------------------------
@@ -32,3 +37,15 @@
 //   }
 // }
 // getUsers();
+
+// (2) .then() with async & await (Using Url)
+// ------------------------------------------------
+
+// const getUsers = async () => {
+//   const res = await fetch("https://jsonplaceholder.typicode.com/users");
+//   const data = await res.json();
+
+//   console.log(data);
+// };
+// getUsers().catch((err)=>{console.log(err)})
+
